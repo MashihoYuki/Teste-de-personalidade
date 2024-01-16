@@ -1,0 +1,153 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
+
+void descreverPersonalidade(float neuroticismo, float conscienciosidade, float extroversao, float agradabilidade, float abertura) {
+    setlocale(LC_ALL, "");
+    printf("\nDescrição dos fatores de personalidade:\n");
+
+    printf("Neuroticismo: ");
+    if (neuroticismo < 30) {
+        printf("Você tende a ser emocionalmente estável e resiliente.");
+    } else if (neuroticismo < 70) {
+        printf("Você possui um equilíbrio razoável entre estabilidade emocional e sensibilidade.");
+    } else {
+        printf("Você pode ser emocionalmente instável e suscetível a estresse e ansiedade.");
+    }
+    printf("\n");
+
+    printf("Conscienciosidade: ");
+    if (conscienciosidade < 30) {
+        printf("Você é menos preocupado com a organização e responsabilidade.");
+    } else if (conscienciosidade < 70) {
+        printf("Você é moderadamente organizado e responsável em suas ações.");
+    } else {
+        printf("Você é altamente organizado e leva suas responsabilidades a sério.");
+    }
+    printf("\n");
+
+    printf("Extroversão: ");
+    if (extroversao < 30) {
+        printf("Você tende a ser introvertido e prefere a solidão ou interações em grupos pequenos.");
+    } else if (extroversao < 70) {
+        printf("Você é uma pessoa equilibrada, capaz de desfrutar de interações sociais, mas também de momentos de solidão.");
+    } else {
+        printf("Você é extrovertido e gosta de estar rodeado de pessoas e atividades sociais.");
+    }
+    printf("\n");
+
+    printf("Agradabilidade: ");
+    if (agradabilidade < 30) {
+        printf("Você pode ser mais cético e menos propenso a confiar nas pessoas.");
+    } else if (agradabilidade < 70) {
+        printf("Você é amigável e geralmente confia nos outros, mas também é seletivo em suas relações.");
+    } else {
+        printf("Você é altamente agradável e tende a confiar nas pessoas e ser cooperativo.");
+    }
+    printf("\n");
+
+    printf("Abertura: ");
+    if (abertura < 30) {
+        printf("Você é mais tradicional e prefere o familiar ao novo e inovador.");
+    } else if (abertura < 70) {
+        printf("Você está disposto a experimentar coisas novas, mas também valoriza a tradição.");
+    } else {
+        printf("Você é muito aberto a novas experiências e ideias, buscando constantemente o novo e o inovador.");
+    }
+    printf("\n");
+}
+
+int validarResposta() {
+    setlocale(LC_ALL, "");
+    int resposta;
+    do {
+        printf("Digite uma resposta: ");
+        scanf("%d", &resposta);
+        if (resposta < 0 || resposta > 10) {
+            printf("Resposta inválida. Por favor, digite um valor entre 0 e 10.\n");
+        }
+    } while (resposta < 0 || resposta > 10);
+    return resposta;
+}
+float calcularFator(int respostas[], int inicio, int fim, float max_pontos) {
+    int soma = 0;
+    for (int i = inicio; i < fim; i++) {
+        soma += respostas[i];
+    }
+    return (soma / max_pontos) * 100;
+}
+void limparTela() {
+    system("cls");
+}
+int main() {
+    int continuar = 1; // continuar o teste
+
+    int max_pontos[] = {50, 50, 50, 50, 50};
+
+    while (continuar) {
+        limparTela();
+        setlocale(LC_ALL, "");
+        printf("Bem-vindo ao Teste de Personalidade! \n");
+
+        int respostas[30];
+        char *perguntas[] = {
+                "Me preocupo com as coisas",
+                "Me irrito facilmente",
+                "Costumo me sentir desanimado(a)",
+                "Tenho dificuldade de me aproximar dos outros",
+                "Estou sempre ocupado",
+                "Completo as tarefas que me são passadas",
+                "Gosta de organizar as coisas",
+                "Tenho claro meus objetivos",
+                "Trabalho duro",
+                "Gosto de ler textos desafiadores",
+                "Faço amigos com facilidade",
+                "Amo festas grandes",
+                "Expresso minhas emoções intensamente",
+                "Prefiro variedade à rotina",
+                "Cometo exageros",
+                "Gosto de ajudar nas tarefas de casa",
+                "Confio nos outros",
+                "Mantenho minhas promessas",
+                "Estou sempre preparado",
+                "Me sinto confortável no meio das pessoas",
+                "Tenho imaginação vívida",
+                "Acredito na importância da arte",
+                "Me considero criativo",
+                "Adoro histórias fantásticas",
+                "Vejo beleza em coisas que os outros não vêem",
+
+        };
+
+        for (int i = 0; i < 25; i++) {
+            printf("Em uma escala de 0 a 10, quanto você se identifica com a afirmação: '%s'? ", perguntas[i]);
+            respostas[i] = validarResposta();
+        }
+
+        float neuroticismo = calcularFator(respostas, 0, 5, max_pontos[0]);
+        float conscienciosidade = calcularFator(respostas, 5, 10, max_pontos[1]);
+        float extroversao = calcularFator(respostas, 10, 15, max_pontos[2]);
+        float agradabilidade = calcularFator(respostas, 15, 20, max_pontos[3]);
+        float abertura = calcularFator(respostas, 20, 25, max_pontos[4]);
+
+        printf("Sua pontuação nos cinco fatores de personalidade em porcentagem é a seguinte:\n");
+        printf("Neuroticismo: %.2f%%\n",neuroticismo);
+        printf("Conscienciosidade: %.2f%%\n", conscienciosidade);
+        printf("Extroversão: %.2f%%\n", extroversao);
+        printf("Agradabilidade: %.2f%%\n", agradabilidade);
+        printf("Abertura: %.2f%%\n", abertura);
+
+        descreverPersonalidade(neuroticismo, conscienciosidade, extroversao, agradabilidade, abertura);
+
+
+        printf("Obrigado por fazer o teste! Deseja fazê-lo novamente? (1 para Sim, 0 para Não): ");
+        scanf("%d", &continuar);
+    }
+
+    printf("Obrigado por participar do Teste de Personalidade! Até a próxima.\n");
+
+    return 0;
+}
+
+
